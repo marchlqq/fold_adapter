@@ -1,0 +1,43 @@
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        maven {url 'https://developer.huawei.com/repo/'}
+        //内网nexus，综合包括了阿里云镜像、flutter-io镜像、adc系列镜像
+        maven{
+            allowInsecureProtocol = true
+            url 'http://10.177.243.170:8081/repository/android-repos/'
+        }
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        maven {url 'https://developer.huawei.com/repo/'}
+        //内网nexus，综合包括了阿里云镜像、flutter-io镜像、adc系列镜像
+        maven{
+            allowInsecureProtocol = true
+            url 'http://10.177.243.170:8081/repository/android-repos/'
+        }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
